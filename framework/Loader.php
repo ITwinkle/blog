@@ -38,7 +38,7 @@ class Loader
      * than last.
      * @return void
      */
-    public static function addNamespace($alias, $dir, $prepend = false)
+    public static function addNamespacePath($alias, $dir, $prepend = false)
     {
         // normalize namespace prefix
         $alias = trim($alias, '\\') . '\\';
