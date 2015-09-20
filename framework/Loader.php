@@ -54,8 +54,6 @@ class Loader
         } else {
             array_push(self::$prefixes[$alias], $dir);
         }
-
-        Loader::register();
     }
     /**
      * Loads the class file for a given class name.
@@ -130,3 +128,4 @@ class Loader
         return false;
     }
 }
+Loader::register();

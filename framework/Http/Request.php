@@ -35,6 +35,7 @@ class Request
      * @var string
      */
     protected $method;
+
     public function __construct()
     {
         array_walk_recursive($_POST, trim);
