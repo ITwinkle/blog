@@ -11,6 +11,8 @@
 
 namespace Framework;
 
+use Framework\DI\Service;
+
 class Router
 {
     /**
@@ -24,13 +26,24 @@ class Router
      *
      * @var mixed
      */
-    private $_controller;
+    private $controller;
     /**
      * current action
      *
      * @var mixed
      */
-    private $_action;
+    private $action;
+
+    /**
+     * @var
+     */
+    private $requirements = [];
+
+    /**
+     * @var
+     */
+    private $security;
+
     /**
      * @param $routes array - array of rules,controllers,actions,params.
      *
@@ -49,29 +62,59 @@ class Router
      *
      * @return mixed, false if route was not found
      */
-    public function getRoute($uri)
+    public function getRoute()
     {
         $routes = $this->_routes;
-        $uri    = '/'.trim($uri, '/');
-        foreach($routes as $routes){
-            if($routes['pattern'] === $uri){
-                $this->_controller = $routes['controller'];
-                $this->_action = $routes['action'];
+        $uri    = '/'.trim(Service::get('request')->getUri(), '/');
+        foreach($routes as $route){
+            if($route['pattern'] === $uri){
+                $this->controller = $route['controller'];
+                $this->action = $route['action'];
+                if (!empty($this->requirements)) {
+                    $this->requirements = $route['_requirements'];
+                }
+                if (!empty($this->security)) {
+                    $this->security = $route['security'];
+                }
             }
         }
         return array(
-            'controller' => $this->_controller,
-            'action'     => $this->_action,
+            'controller' => $this->controller,
+            'action'     => $this->action,
+            '_requirements' => $this->requirements,
+            'security' => $this->security
         );
     }
 
     /**
      *
-     * 
+     *
+     *@return array
      */
     public function generateRoute($name){
+        $routes = $this->_routes;
 
+        foreach($routes as $key => $value){
+            if($key === $name){
+                $this->controller = $value['controller'];
+                $this->action = $value['action'];
+                if (!empty($this->requirements)) {
+                    $this->requirements = $value['_requirements'];
+                }
+                if (!empty($this->security)) {
+                    $this->security = $value['security'];
+                }
+            }
+        }
+        return array(
+            'controller' => $this->controller,
+            'action'     => $this->action,
+            '_requirements' => $this->requirements,
+            'security' => $this->security
+        );
     }
+
+
     /**
      * return current controller
      *
@@ -79,7 +122,7 @@ class Router
      */
     public function getController()
     {
-        return $this->_controller;
+        return $this->controller;
     }
     /**
      * return current action
@@ -88,6 +131,6 @@ class Router
      */
     public function getAction()
     {
-        return $this->_action;
+        return $this->action;
     }
 }

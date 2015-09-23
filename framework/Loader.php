@@ -16,7 +16,7 @@ class Loader
      *
      * @var array
      */
-    static $prefixes = array();
+    static $aliases = array();
 
     /**
      * Register loader with SPL autoloader stack.
@@ -45,14 +45,14 @@ class Loader
         // normalize the base directory with a trailing separator
         $dir = rtrim($dir, DIRECTORY_SEPARATOR) . '/';
         // initialize the namespace prefix array
-        if (isset(self::$prefixes[$alias]) === false) {
-            self::$prefixes[$alias] = array();
+        if (isset(self::$aliases[$alias]) === false) {
+            self::$aliases[$alias] = array();
         }
         // retain the base directory for the namespace prefix
         if ($prepend) {
-            array_unshift(self::$prefixes[$alias], $dir);
+            array_unshift(self::$aliases[$alias], $dir);
         } else {
-            array_push(self::$prefixes[$alias], $dir);
+            array_push(self::$aliases[$alias], $dir);
         }
     }
     /**
@@ -95,11 +95,11 @@ class Loader
     protected static function loadMappedFile($alias, $relative_class)
     {
         // are there any base directories for this namespace prefix?
-        if (isset(self::$prefixes[$alias]) === false) {
+        if (isset(self::$aliases[$alias]) === false) {
             return false;
         }
         // look through base directories for this namespace prefix
-        foreach (self::$prefixes[$alias] as $dir) {
+        foreach (self::$aliases[$alias] as $dir) {
             // replace the namespace prefix with the base directory,
             // replace namespace separators with directory separators
             // in the relative class name, append with .php

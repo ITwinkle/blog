@@ -1,7 +1,8 @@
 <?php
 
+namespace Framework\Response;
 
-class Responce
+class Response implements ResponseInterface
 {
     /**
      * Status code descriptions.
@@ -66,25 +67,25 @@ class Responce
      * array of headers
      * @var array
      */
-    private $headers = array();
+    protected $headers = array();
 
     /**
      * HTTP package version
      * @var string
      */
-    private $version = 'HTTP/1.1';
+    protected $version = 'HTTP/1.1';
 
     /**
      * HTTP package body
      * @var string
      */
-    private $body = '';
+    protected $body = '';
 
     /**
      * HTTP package status code
      * @var int
      */
-    private $status;
+    protected $status;
 
     /**
      * @param string $body - HTTP package body
@@ -93,14 +94,6 @@ class Responce
     public function __construct($body = '', $status = 200){
         $this->setBody($body);
         $this->setStatus($status);
-    }
-
-    /**
-     * redirect on new page
-     * @param $uri mix - new page uri
-     */
-    public function redirect($uri){
-        header('location:'.trim($uri));
     }
 
     /**
@@ -186,7 +179,7 @@ class Responce
      * send HTTP package
      */
     public function send(){
-        if(count($this->headers) != 0){
+        if(0 != count($this->headers)){
             $this->sendHeaders();
         }
         echo $this->body;

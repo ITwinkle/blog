@@ -1,6 +1,6 @@
 <?php
 
-namespace framework;
+namespace Framework\Request;
 /**
  * Class Request
  *
@@ -36,6 +36,19 @@ class Request
      */
     protected $method;
 
+    /**
+     * requested uri
+     * @var string
+     */
+    protected $rUri;
+
+    /**
+     * @var string - host
+     */
+    protected $host;
+    /**
+     * initiation
+     */
     public function __construct()
     {
         array_walk_recursive($_POST, trim);
@@ -45,6 +58,8 @@ class Request
         $this->post   = $_POST;
         $this->server = $_SERVER;
         $this->method = $_SERVER['REQUESTED_METHOD'];
+        $this->host = $_SERVER['HTTP_HOST'];
+        $this->rUri = $_SERVER['REQUEST_URI'];
     }
     /**
      * return which request method was used to access the page
@@ -54,6 +69,20 @@ class Request
     public function getMethod()
     {
         return $this->method;
+    }
+
+    public function getUri(){
+        return $this->rUri;
+    }
+
+    /**
+     * return HTTP host
+     *
+     * @return string
+     */
+    public function getHost()
+    {
+        return $this->host;
     }
     /**
      * check for requested method is GET
@@ -91,7 +120,7 @@ class Request
      *
      * @return mixed
      */
-    public function getGet($key = false)
+    public function get($key = false)
     {
         return ($key)?(isset($this->get[$key])?$this->get[$key]:false):$this->get;
     }
@@ -104,7 +133,7 @@ class Request
      *
      * @return mixed
      */
-    public function getPost($key = false)
+    public function post($key = false)
     {
         return ($key)?(isset($this->post[$key])?$this->post[$key]:false):$this->post;
     }

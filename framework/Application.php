@@ -1,14 +1,18 @@
 <?php
 
 namespace Framework;
-
+use Framework\DI\Service;
 class Application
 {
     private $configs = [];
 
     public function __construct($conf){
         $this->configs = include $conf;
-    }
+        Service::set('request',new \Framework\Request\Request());
+       // Service::set('session',new Framework\Session\Session());
+       // Service::set('security',new Framework\Security\Security());
+
+       }
 
     public function devMod(){
         if($this->configs['mode'] === 'dev'){
@@ -26,7 +30,8 @@ class Application
 
         $route = new Router();
         $route->set($this->configs['routes']);
-        $route = $route->getRoute($_SERVER['REQUEST_URI']);
+
+        $route = $route->getRoute();
         $controllerClass = $route['controller'];
         $actionClass = $route['action'].'Action';
         if (class_exists($controllerClass)) {
