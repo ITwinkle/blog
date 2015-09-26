@@ -2,8 +2,15 @@
 
 namespace Framework;
 use Framework\DI\Service;
+use Framework\Exception\HttpException;
+
 class Application
 {
+    /**
+     * configurations of project
+     *
+     * @var array|mixed
+     */
     private $configs = [];
 
     public function __construct($conf){
@@ -34,17 +41,21 @@ class Application
         $route = $route->getRoute();
         $controllerClass = $route['controller'];
         $actionClass = $route['action'].'Action';
+        try{
         if (class_exists($controllerClass)) {
             $refl = new \ReflectionClass($controllerClass);
         } else {
-            exit('No such controller');
+            throw new HttpException('No such controller', 404);
         }
         if ($refl->hasMethod($actionClass)) {
             $controller     = $refl->newInstance();
             $action         = $refl->getMethod($actionClass);
             $action->invoke($controller);
         } else {
-            exit('No such method');
+            throw new HttpException('No such method', 404);
+        }
+        }catch (HttpException $e){
+            echo $e->getMessage(). '\n file: '.$e->getFile(). '\n line: '.$e->getLine();
         }
     }
 }

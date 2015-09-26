@@ -2,6 +2,7 @@
 
 namespace Framework\DI;
 
+use Framework\Exception\DiException;
 
 class Service
 {
@@ -10,7 +11,7 @@ class Service
      *
      * @var array
      */
-    protected static $di = array();
+    protected static $services = array();
     /**
      * @param string $name   - alias of object
      * @param string $object - name of object
@@ -19,7 +20,7 @@ class Service
      */
     public static function set($name, $object)
     {
-        self::$di[$name] = $object;
+        self::$services[$name] = $object;
     }
     /**
      * @param string $name - alias of object
@@ -28,15 +29,15 @@ class Service
      */
     public static function get($name)
     {
-        if (isset(self::$di[$name])) {
-            if (self::$di[$name] instanceof \Closure) {
-                $class = call_user_func(self::$di[$name]);
+        if (isset(self::$services[$name])) {
+            if (self::$services[$name] instanceof \Closure) {
+                $class = call_user_func(self::$services[$name]);
             } else {
-                $class = self::$di[$name];
+                $class = self::$services[$name];
             }
             return $class;
         } else {
-            exit('ERROR');
+            throw new DiException('No such service in container');
         }
     }
     /**
