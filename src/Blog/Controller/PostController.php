@@ -22,7 +22,7 @@ class PostController extends Controller
 
     public function indexAction()
     {
-        return $this->render('index.html', array('posts' => Post::find('all')));
+        return $this->render('index.html', array('posts' => Post::findAll()));
     }
 
     public function getPostAction($id)

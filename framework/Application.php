@@ -16,9 +16,14 @@ class Application
     public function __construct($conf){
         $this->configs = include $conf;
         Service::set('request',new \Framework\Request\Request());
+        Service::set('view', new \Framework\Renderer\View());
        // Service::set('session',new Framework\Session\Session());
        // Service::set('security',new Framework\Security\Security());
-
+        try {
+            Service::set('pdo', new \PDO($this->configs['pdo']['dns'], $this->configs['pdo']['user'], $this->configs['pdo']['password']));
+        }catch (\PDOException $e){
+            echo "Wrong connection: " . $e->getMessage();
+        }
        }
 
     public function devMod(){

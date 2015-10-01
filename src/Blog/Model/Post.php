@@ -23,6 +23,14 @@ class Post extends ActiveRecord
         return 'posts';
     }
 
+    public static function getColumns(){
+        return array('title', 'content', 'date');
+    }
+
+    public static function getId(){
+        return 'id';
+    }
+
     public function getRules()
     {
         return array(

@@ -23,6 +23,15 @@ class User extends ActiveRecord implements UserInterface
         return 'users';
     }
 
+    public static function getColumns(){
+        return array('email', 'password', 'role');
+    }
+
+    public static function getId(){
+        return 'id';
+    }
+
+
     public function getRole()
     {
         return $this->role;
