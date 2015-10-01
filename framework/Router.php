@@ -20,7 +20,7 @@ class Router
      *
      * @var array
      */
-    private $_routes = array();
+    private $routes = array();
     /**
      * current controller
      *
@@ -52,7 +52,7 @@ class Router
      */
     public function set(array $routes)
     {
-        $this->_routes = array_merge($this->_routes, $routes);
+        $this->routes = array_merge($this->routes, $routes);
         return $this;
     }
     /**
@@ -64,26 +64,30 @@ class Router
      */
     public function getRoute()
     {
-        $routes = $this->_routes;
-        $uri    = '/'.trim(Service::get('request')->getUri(), '/');
-        foreach($routes as $route){
-            if($route['pattern'] === $uri){
-                $this->controller = $route['controller'];
-                $this->action = $route['action'];
-                if (!empty($this->requirements)) {
-                    $this->requirements = $route['_requirements'];
-                }
-                if (!empty($this->security)) {
-                    $this->security = $route['security'];
+        $uri = '/' . trim(Service::get('request')->getUri(), '/');
+        foreach ($this->routes as $route) {
+            $pattern = str_replace(array('{', '}'), array('(?P<', '>)'), $route['pattern']);
+            if (array_key_exists('_requirements', $route)) {
+                if (0 !== count($route['_requirements'])) {
+                    $search = $replace = array();
+                    foreach ($route['_requirements'] as $key => $value) {
+                        $search[] = '<' . $key . '>';
+                        $replace[] = '<' . $key . '>' . $value;
+                    }
+                    $pattern = str_replace($search, $replace, $pattern);
                 }
             }
+            if (!preg_match('&^' . $pattern . '$&', $uri, $params)) {
+                continue;
+            }
+            $params = array_merge(array('controller' => $route['controller'], 'action' => $route['action']), $params);
+            foreach ($params as $key => $value) {
+                if (is_int($key)) {
+                    unset($params[$key]);
+                }
+            }
+            return $params;
         }
-        return array(
-            'controller' => $this->controller,
-            'action'     => $this->action,
-            '_requirements' => $this->requirements,
-            'security' => $this->security
-        );
     }
 
     /**
@@ -92,7 +96,7 @@ class Router
      *@return array
      */
     public function generateRoute($name){
-        $routes = $this->_routes;
+        $routes = $this->routes;
 
         foreach($routes as $key => $value){
             if($key === $name){

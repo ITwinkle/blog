@@ -15,8 +15,10 @@ class Application
 
     public function __construct($conf){
         $this->configs = include $conf;
+        $this->devMod();
         Service::set('request',new \Framework\Request\Request());
-        Service::set('view', new \Framework\Renderer\View());
+        Service::set('renderer', new \Framework\Renderer\Renderer());
+
        // Service::set('session',new Framework\Session\Session());
        // Service::set('security',new Framework\Security\Security());
         try {
@@ -38,7 +40,6 @@ class Application
         }
     }
     public function run(){
-        $this->devMod();
 
         $route = new Router();
         $route->set($this->configs['routes']);

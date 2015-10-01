@@ -51,13 +51,13 @@ class Request
      */
     public function __construct()
     {
-        array_walk_recursive($_POST, trim);
-        array_walk_recursive($_GET, trim);
-        array_walk_recursive($_SERVER, trim);
+        array_walk_recursive($_POST, 'trim');
+        array_walk_recursive($_GET, 'trim');
+        array_walk_recursive($_SERVER, 'trim');
         $this->get    = $_GET;
         $this->post   = $_POST;
         $this->server = $_SERVER;
-        $this->method = $_SERVER['REQUESTED_METHOD'];
+        $this->method = $_SERVER['REQUEST_METHOD'];
         $this->host = $_SERVER['HTTP_HOST'];
         $this->rUri = $_SERVER['REQUEST_URI'];
     }

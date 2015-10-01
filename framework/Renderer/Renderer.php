@@ -1,13 +1,24 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: ihor
+ * Date: 01.10.15
+ * Time: 19:17
+ */
 
-class View
+namespace Framework\Renderer;
+
+
+class Renderer
 {
+    public static  $renderPath;
+
     /**
      * path to  view
      *
      * @var string
      */
-    private $_view = '../../src/Blog/views/Post/index.html';
+    private $layout = '';
     /**
      * array of params of view
      *
@@ -20,6 +31,10 @@ class View
      * @var string
      */
     public $ext = '.php';
+
+    public function __construct(){
+        static::$renderPath = ROOT.'src/Blog/views/';
+    }
 
     /**
      * initialize variables of view
@@ -58,17 +73,17 @@ class View
      * @param $vars - params
      * @return string
      */
-    public function render($path = '', $vars)
+    public function render($view, $vars)
     {
-        if(!empty($path)){
-            $this->_view = $path.$this->ext;
-        }
+        $this->layout = static::$renderPath.$view.$this->ext;
+
         if(!empty($vars)){
             $this->_vars = array_merge($this->_vars, $vars);
         }
+
         ob_start();
         extract($this->_vars);
-        include $this->_view;
+        include $this->layout;
         return ob_get_clean();
     }
 }
