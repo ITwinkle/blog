@@ -32,6 +32,5 @@ interface ResponseInterface{
      * @param $status - HTTP package status
      *
      */
-
     function setStatus($status);
 }

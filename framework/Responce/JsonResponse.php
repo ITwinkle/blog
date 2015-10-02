@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ihor
- * Date: 20.09.15
- * Time: 21:55
- */
 
 namespace Framework\Response;
-
 
 class JsonRespose extends Response
 {

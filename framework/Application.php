@@ -3,6 +3,9 @@
 namespace Framework;
 use Framework\DI\Service;
 use Framework\Exception\HttpException;
+use Framework\Response\JsonRespose;
+use Framework\Response\Response;
+use Framework\Response\ResponseInterface;
 
 class Application
 {
@@ -18,7 +21,6 @@ class Application
         $this->devMod();
         Service::set('request',new \Framework\Request\Request());
         Service::set('renderer', new \Framework\Renderer\Renderer());
-
        // Service::set('session',new Framework\Session\Session());
        // Service::set('security',new Framework\Security\Security());
         try {
@@ -58,8 +60,15 @@ class Application
             $action         = $refl->getMethod($actionClass);
             unset($route['controller'],$route['action']);
             $response = $action->invokeArgs($controller,$route);
-            return $response;
-            //$action->invoke($controller);
+            if($response instanceof Response){
+                $resp = new Response($response);
+                $resp->send();
+            }elseif($response instanceof JsonRespose){
+                $resp = new JsonRespose($response);
+                $resp->send();
+            }else{
+                //return $response;
+            }
         } else {
             throw new HttpException('No such method', 404);
         }
