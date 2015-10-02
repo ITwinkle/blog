@@ -13,7 +13,7 @@ abstract class Controller
     }
 
     public function render($view, $vars){
-        return Service::get('renderer')->render($view,$vars);
+        //return Service::get('renderer')->render($view,$vars);
     }
 
     public function generateRoute(){

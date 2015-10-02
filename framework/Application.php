@@ -56,7 +56,10 @@ class Application
         if ($refl->hasMethod($actionClass)) {
             $controller     = $refl->newInstance();
             $action         = $refl->getMethod($actionClass);
-            $action->invoke($controller);
+            unset($route['controller'],$route['action']);
+            $response = $action->invokeArgs($controller,$route);
+            return $response;
+            //$action->invoke($controller);
         } else {
             throw new HttpException('No such method', 404);
         }
