@@ -60,14 +60,8 @@ class Application
             $action         = $refl->getMethod($actionClass);
             unset($route['controller'],$route['action']);
             $response = $action->invokeArgs($controller,$route);
-            if($response instanceof Response){
-                $resp = new Response($response);
-                $resp->send();
-            }elseif($response instanceof JsonRespose){
-                $resp = new JsonRespose($response);
-                $resp->send();
-            }else{
-                //return $response;
+            if($response instanceof ResponseInterface) {
+                $response->send();
             }
         } else {
             throw new HttpException('No such method', 404);
