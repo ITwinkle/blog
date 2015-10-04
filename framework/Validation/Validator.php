@@ -54,11 +54,12 @@ class Validatore
                 $val = $value->validate($rules[$rule]);
                 if(is_string($val)){
                     $this->setErrors($val);
-                    return false;
-                }else{
-                    return true;
                 }
             }
         }
+        if(!empty($this->getErrors())){
+            return false;
+        }
+        return true;
     }
 }

@@ -24,10 +24,10 @@ class Length
      * @return bool|string
      */
     public function validate($field){
-        if(count($field) < $this->minLength || count($field) > $this->maxLength){
-            return 'Length of '.$field.'don\'t in diapason between '.$this->minLength.' and '.$this->maxLenght  ;
-        }else{
+        if(strlen($field) >= $this->minLength && strlen($field) <= $this->maxLength){
             return true;
+        }else{
+            return 'Length of '.$field.'don\'t in diapason between '.$this->minLength.' and '.$this->maxLenght;
         }
     }
 }
