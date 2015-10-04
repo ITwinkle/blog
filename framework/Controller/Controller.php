@@ -20,7 +20,11 @@ abstract class Controller
     }
 
     public function generateRoute($name){
-        Service::get('router')->generateRoute($name);
+        return Service::get('router')->generateRoute($name);
+    }
+
+    public function getRequest(){
+        return Service::get('request');
     }
 
 }

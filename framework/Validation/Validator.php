@@ -2,7 +2,7 @@
 
 namespace Framework\Validation;
 
-class Validatore
+class Validator
 {
     /**
      * current object

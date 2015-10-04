@@ -110,12 +110,7 @@ class Router
                 }
             }
         }
-        return array(
-            'controller' => $this->controller,
-            'action'     => $this->action,
-            '_requirements' => $this->requirements,
-            'security' => $this->security
-        );
+        return $this->controller.'/'.$this->action.'Action';
     }
 
 

@@ -2,16 +2,21 @@
 
 namespace Framework\Renderer;
 
+use Framework\Application;
+
 class Renderer
 {
     public static  $renderPath;
 
     /**
-     * path to  view
+     * base layout
      *
      * @var string
      */
     private $layout = '';
+
+    private $view = '';
+
     /**
      * array of params of view
      *
@@ -26,6 +31,7 @@ class Renderer
     public $ext = '.php';
 
     public function __construct(){
+        $this->layout = Application::$configs['main_layout'];
         static::$renderPath = ROOT.'src/Blog/views/';
     }
 
@@ -68,7 +74,7 @@ class Renderer
      */
     public function render($view, $vars = '')
     {
-        $this->layout = $view.$this->ext;
+        $this->view = $view.$this->ext;
 
         if(!empty($vars)){
             $this->_vars = array_merge($this->_vars, $vars);
@@ -76,7 +82,9 @@ class Renderer
 
         ob_start();
         extract($this->_vars);
-        include $this->layout;
-        return ob_get_clean();
+        include $this->view;
+        $content =  ob_get_clean();
+
+        return include($this->layout);
     }
 }

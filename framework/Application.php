@@ -2,9 +2,7 @@
 
 namespace Framework;
 use Framework\DI\Service;
-use Framework\Exception\HttpException;
-use Framework\Response\JsonRespose;
-use Framework\Response\Response;
+use Framework\Exception\HttpNotFoundException;
 use Framework\Response\ResponseInterface;
 
 class Application
@@ -14,24 +12,24 @@ class Application
      *
      * @var array|mixed
      */
-    private $configs = [];
+    public static $configs = [];
 
     public function __construct($conf){
-        $this->configs = include $conf;
+        static::$configs = include $conf;
         $this->devMod();
         Service::set('request',new \Framework\Request\Request());
         Service::set('renderer', new \Framework\Renderer\Renderer());
-       // Service::set('session',new Framework\Session\Session());
+        Service::set('session',new \Framework\Session\Session());
        // Service::set('security',new Framework\Security\Security());
         try {
-            Service::set('pdo', new \PDO($this->configs['pdo']['dns'], $this->configs['pdo']['user'], $this->configs['pdo']['password']));
+            Service::set('pdo', new \PDO(static::$configs['pdo']['dns'], static::$configs['pdo']['user'], static::$configs['pdo']['password']));
         }catch (\PDOException $e){
             echo "Wrong connection: " . $e->getMessage();
         }
        }
 
     public function devMod(){
-        if($this->configs['mode'] === 'dev'){
+        if(static::$configs['mode'] === 'dev'){
             ini_set('error_reporting', E_ALL);
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
@@ -44,7 +42,7 @@ class Application
     public function run(){
 
         $route = new Router();
-        $route->set($this->configs['routes']);
+        $route->set(static::$configs['routes']);
 
         $route = $route->getRoute();
         $controllerClass = $route['controller'];
@@ -53,7 +51,7 @@ class Application
         if (class_exists($controllerClass)) {
             $refl = new \ReflectionClass($controllerClass);
         } else {
-            throw new HttpException('No such controller', 404);
+            throw new HttpNotFoundException('No such controller', 404);
         }
         if ($refl->hasMethod($actionClass)) {
             $controller     = $refl->newInstance();
@@ -66,9 +64,9 @@ class Application
                 throw new \Exception();
             }
         } else {
-            throw new HttpException('No such method', 404);
+            throw new HttpNotFoundException('No such method', 404);
         }
-        }catch (HttpException $e){
+        }catch (HttpNotFoundException $e){
             echo $e->getMessage(). '\n file: '.$e->getFile(). '\n line: '.$e->getLine();
         }
     }
