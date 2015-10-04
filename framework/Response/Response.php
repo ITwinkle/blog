@@ -99,17 +99,17 @@ class Response implements ResponseInterface
     /**
      * set HTTP package body
      * @param $body string - HTTP package body
-     * @return object Responce
+     * @return object Response
      */
     public function setBody($body){
-        $this->body = (string)$body;
+        $this->body = $body;
         return $this;
     }
 
     /**
      * set version of HTTP package
      * @param $status int - status code
-     * @return object Responce
+     * @return object Response
      */
     public function setStatus($status){
         if($status > 100 || $status <= 600){
@@ -132,7 +132,7 @@ class Response implements ResponseInterface
     /**
      * set version of HTTP protocol
      * @param $version string - version of HTTP protocol
-     * @return object Responce
+     * @return object Response
      */
     public function setVersion($version){
         if($version == '1.0' || $version == '1.1'){
@@ -155,7 +155,7 @@ class Response implements ResponseInterface
     /**
      * set HTTP package headers
      * @param $header array - array of headers
-     * @return object Responce
+     * @return object Response
      */
     public function setHeaders(array $header){
         $this->headers = array_merge($this->headers,$header);
@@ -164,7 +164,7 @@ class Response implements ResponseInterface
 
     /**
      * generate HTTP status line, send HTTP package headers
-     * @return object Responce
+     * @return object Response
      */
     public function sendHeaders(){
         $status_line = $this->version.' '.$this->status.' '.self::$messages[$this->status];

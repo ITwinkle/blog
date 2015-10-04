@@ -5,7 +5,7 @@ namespace Framework\Controller;
 
 use Framework\DI\Service;
 use Framework\Response\ResponseRedirect;
-
+use \Framework\Renderer\Renderer;
 abstract class Controller
 {
     public function redirect($url, $message = ''){
@@ -13,11 +13,14 @@ abstract class Controller
     }
 
     public function render($view, $vars){
-        //return Service::get('renderer')->render($view,$vars);
+        $class = explode('\\',static::class);
+        $class =  substr($class[2],0,strpos($class[2],'Controller'));
+        $view = Renderer::$renderPath.$class.'/'.$view;
+        return Service::get('renderer')->render($view,$vars);
     }
 
-    public function generateRoute(){
-
+    public function generateRoute($name){
+        Service::get('router')->generateRoute($name);
     }
 
 }

@@ -62,6 +62,8 @@ class Application
             $response = $action->invokeArgs($controller,$route);
             if($response instanceof ResponseInterface) {
                 $response->send();
+            }else{
+                throw new \Exception();
             }
         } else {
             throw new HttpException('No such method', 404);

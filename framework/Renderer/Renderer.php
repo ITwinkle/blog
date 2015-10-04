@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ihor
- * Date: 01.10.15
- * Time: 19:17
- */
 
 namespace Framework\Renderer;
-
 
 class Renderer
 {
@@ -69,13 +62,13 @@ class Renderer
     /**
      * render output data
      *
-     * @param string $path - path to view
+     * @param string $view - path to view
      * @param $vars - params
      * @return string
      */
-    public function render($view, $vars)
+    public function render($view, $vars = '')
     {
-        $this->layout = static::$renderPath.$view.$this->ext;
+        $this->layout = $view.$this->ext;
 
         if(!empty($vars)){
             $this->_vars = array_merge($this->_vars, $vars);

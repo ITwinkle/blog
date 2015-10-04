@@ -27,4 +27,6 @@ abstract class ActiveRecord
      * @return array
      */
     abstract static function getColumns();
+
+    public static function Findall(){}
 }
