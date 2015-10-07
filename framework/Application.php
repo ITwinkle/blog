@@ -20,7 +20,7 @@ class Application
         Service::set('request',new \Framework\Request\Request());
         Service::set('renderer', new \Framework\Renderer\Renderer());
         Service::set('session',new \Framework\Session\Session());
-       // Service::set('security',new Framework\Security\Security());
+        Service::set('security',new \Framework\Security\Security());
         try {
             Service::set('pdo', new \PDO(static::$configs['pdo']['dns'], static::$configs['pdo']['user'], static::$configs['pdo']['password']));
         }catch (\PDOException $e){
