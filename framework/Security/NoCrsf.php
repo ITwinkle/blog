@@ -7,7 +7,9 @@ use Framework\DI\Service;
 class NoCrsf
 {
     public static function generate(){
-        return Service::get('session')->set('token',base64_encode(openssl_random_pseudo_bytes(5)));
+        $token = base64_encode(openssl_random_pseudo_bytes(5));
+        Service::get('session')->set('token',$token);
+        return $token;
     }
     public static function check($token){
         $ses_token = Service::get('session')->get('token');
