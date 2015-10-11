@@ -2,7 +2,6 @@
 
 namespace Framework\Security;
 
-
 use Framework\DI\Service;
 
 class Security

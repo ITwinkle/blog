@@ -60,7 +60,7 @@ class PostController extends Controller
 
     public function showAction($id)
     {
-        if (!$post = Post::find((int)$id)) {
+        if (!$post = Post::find('id',$id)) {
             throw new HttpNotFoundException('Page Not Found!');
         }
         return $this->render('show.html', array('post' => $post));

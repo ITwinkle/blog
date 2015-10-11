@@ -4,7 +4,6 @@ namespace Framework\Validation\Filter;
 
 class NotBlank
 {
-
     /**
      * check field for empty
      *

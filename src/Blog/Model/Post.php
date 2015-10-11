@@ -24,7 +24,7 @@ class Post extends ActiveRecord
     }
 
     public static function getColumns(){
-        return array('title', 'content', 'date');
+        return array('title', 'content', 'date', 'name');
     }
 
     public static function getId(){

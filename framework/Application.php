@@ -17,10 +17,13 @@ class Application
     public function __construct($conf){
         static::$configs = include $conf;
         $this->devMod();
+        Service::set('router',new \Framework\Router());
+        Service::set('noCrsf', new \Framework\Security\NoCrsf());
+        Service::set('flush', new \Framework\Flush());
         Service::set('request',new \Framework\Request\Request());
-        Service::set('renderer', new \Framework\Renderer\Renderer());
         Service::set('session',new \Framework\Session\Session());
         Service::set('security',new \Framework\Security\Security());
+        Service::set('renderer', new \Framework\Renderer\Renderer());
         try {
             Service::set('pdo', new \PDO(static::$configs['pdo']['dns'], static::$configs['pdo']['user'], static::$configs['pdo']['password']));
         }catch (\PDOException $e){
@@ -41,10 +44,9 @@ class Application
     }
     public function run(){
 
-        $route = new Router();
-        $route->set(static::$configs['routes']);
+        Service::get('router')->set(static::$configs['routes']);
 
-        $route = $route->getRoute();
+        $route = Service::get('router')->getRoute();
         $controllerClass = $route['controller'];
         $actionClass = $route['action'].'Action';
         try{

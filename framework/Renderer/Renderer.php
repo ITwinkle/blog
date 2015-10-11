@@ -3,17 +3,11 @@
 namespace Framework\Renderer;
 
 use Framework\Application;
+use Framework\DI\Service;
 
 class Renderer
 {
     public static  $renderPath;
-
-    /**
-     * base layout
-     *
-     * @var string
-     */
-    private $layout = '';
 
     private $view = '';
 
@@ -31,8 +25,19 @@ class Renderer
     public $ext = '.php';
 
     public function __construct(){
-        $this->layout = Application::$configs['main_layout'];
         static::$renderPath = ROOT.'src/Blog/views/';
+        $this->set('include',
+            function ($controller, $action, $params) {
+                $ctrl = new $controller;
+                $action .= 'Action';
+                return call_user_func_array(array($ctrl, $action), $params);
+            }
+        );
+        $this->set('user',Service::get('security')->getUser());
+        $this->set('route',Service::get('router')->getActiveRoute());
+        $this->set('getRoute',function($name){return Service::get('router')->generateRoute($name);} );
+        $this->set('generateToken',function(){return Service::get('noCrsf');});
+
     }
 
     /**
@@ -74,8 +79,13 @@ class Renderer
      */
     public function render($view, $vars = '')
     {
-        $this->view = $view.$this->ext;
-
+        if($view == Application::$configs['main_layout']){
+            $this->view = $view;
+        }elseif($view == Application::$configs['error_500']){
+            $this->view = $view;
+        }else {
+            $this->view = $view . $this->ext;
+        }
         if(!empty($vars)){
             $this->_vars = array_merge($this->_vars, $vars);
         }
@@ -83,8 +93,6 @@ class Renderer
         ob_start();
         extract($this->_vars);
         include $this->view;
-        $content =  ob_get_clean();
-
-        return include($this->layout);
+        return ob_get_clean();
     }
 }

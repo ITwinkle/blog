@@ -34,15 +34,7 @@ class Router
      */
     private $action;
 
-    /**
-     * @var
-     */
-    private $requirements = [];
-
-    /**
-     * @var
-     */
-    private $security;
+    private $activeRoute;
 
     /**
      * @param $routes array - array of rules,controllers,actions,params.
@@ -56,18 +48,23 @@ class Router
         return $this;
     }
     /**
-     * set rules of route
+     * set rules of route and return array of routes
      *
-     * @param string $uri
-     *
-     * @return mixed, false if route was not found
+     * @return array
      */
     public function getRoute()
     {
         $uri = '/' . trim(Service::get('request')->getUri(), '/');
-        foreach ($this->routes as $route) {
+        foreach ($this->routes as $name => $route) {
             $pattern = str_replace(array('{', '}'), array('(?P<', '>)'), $route['pattern']);
             if (array_key_exists('_requirements', $route)) {
+                if (array_key_exists(
+                        '_method',
+                        $route['_requirements']
+                    ) && $route['_requirements']['_method'] != Service::get('request')->getMethod()
+                ) {
+                    continue;
+                }
                 if (0 !== count($route['_requirements'])) {
                     $search = $replace = array();
                     foreach ($route['_requirements'] as $key => $value) {
@@ -77,7 +74,7 @@ class Router
                     $pattern = str_replace($search, $replace, $pattern);
                 }
             }
-            if (!preg_match('&^' . $pattern . '$&', $uri, $params)) {
+            if (!preg_match('~^' . $pattern . '$~', $uri, $params)) {
                 continue;
             }
             $params = array_merge(array('controller' => $route['controller'], 'action' => $route['action']), $params);
@@ -86,31 +83,30 @@ class Router
                     unset($params[$key]);
                 }
             }
+            $this->activeRoute = array('_name'=>$name);
             return $params;
         }
     }
 
     /**
-     *
+     *Generate specific uri
      *
      *@return array
      */
     public function generateRoute($name){
-        $routes = $this->routes;
-
-        foreach($routes as $key => $value){
-            if($key === $name){
-                $this->controller = $value['controller'];
-                $this->action = $value['action'];
-                if (!empty($this->requirements)) {
-                    $this->requirements = $value['_requirements'];
-                }
-                if (!empty($this->security)) {
-                    $this->security = $value['security'];
-                }
-            }
+        if(array_key_exists($name,$this->routes)){
+            return $this->routes[$name]['pattern'];
         }
-        return $this->controller.'/'.$this->action.'Action';
+        return "sadas";
+    }
+
+    /**
+     * return active route
+     *
+     * @return mixed
+     */
+    public function getActiveRoute(){
+        return $this->activeRoute;
     }
 
 
