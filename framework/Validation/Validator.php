@@ -50,8 +50,8 @@ class Validator
     public function isValid(){
         $rules = $this->object->getRules();
         foreach($rules as $rule=>$field){
-            foreach($rules[$rule] as $value){
-                $val = $value->validate($rules[$rule]);
+            foreach($field as $value){
+                $val = $value->validate($this->object->$rule);
                 if(is_string($val)){
                     $this->setErrors($val);
                 }
