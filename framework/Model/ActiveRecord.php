@@ -51,12 +51,12 @@ abstract class ActiveRecord
     public function save(){
         $query = 'insert into '.static::getTable().'(';
         foreach(static::getColumns() as $column) {
-            $query .='\''. $column.'\',';
+            $query .= $column.',';
         }
         $query = substr($query,0,-1);
         $query .= ') values(';
-        foreach(static::getColumns() as $col){
-            $query.= '\''.$this->$col.'\',';
+        foreach(static::getColumns() as $column){
+            $query.= '\''.$this->$column.'\',';
         }
         $query = substr($query,0,-1);
         $query .= ')';

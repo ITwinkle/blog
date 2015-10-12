@@ -3,11 +3,9 @@
 namespace framework\Model;
 
 
-interface ActiveRecodrInterface
+interface ActiveRecordInterface
 {
-
     static function getId();
     static function getColumns();
     static function getTable();
-
 }
