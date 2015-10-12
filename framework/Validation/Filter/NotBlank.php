@@ -11,7 +11,7 @@ class NotBlank
      * @return bool|string
      */
     public function validate($field){
-        if(empty(trim($field,' '))){
+        if('' == trim($field,' ')){
             return $field.' is empty!';
         }else{
             return true;

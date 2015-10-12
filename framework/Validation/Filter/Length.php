@@ -13,8 +13,8 @@ class Length
      * @param $max - max value
      */
     public function __construct($min,$max){
-        $this->maxLenght = $max;
         $this->minLength = $min;
+        $this->maxLength = $max;
     }
 
     /**
@@ -27,7 +27,7 @@ class Length
         if(strlen($field) >= $this->minLength && strlen($field) <= $this->maxLength){
             return true;
         }else{
-            return 'Length of '.$field.'don\'t in diapason between '.$this->minLength.' and '.$this->maxLenght;
+            return 'Length of \''.$field.'\' don\'t in diapason between '.$this->minLength.' and '.$this->maxLenght;
         }
     }
 }

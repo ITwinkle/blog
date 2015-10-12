@@ -9,9 +9,10 @@
 namespace Blog\Model;
 
 use Framework\Model\ActiveRecord;
+use Framework\Model\ActiveRecodrInterface;
 use Framework\Security\Model\UserInterface;
 
-class User extends ActiveRecord implements UserInterface
+class User extends ActiveRecord implements UserInterface, ActiveRecodrInterface
 {
     public $id;
     public $email;

@@ -33,6 +33,7 @@ class Renderer
                 return call_user_func_array(array($ctrl, $action), $params);
             }
         );
+        $this->set('flush', Service::get('flush')->show());
         $this->set('user',Service::get('security')->getUser());
         $this->set('route',Service::get('router')->getActiveRoute());
         $this->set('getRoute',function($name){return Service::get('router')->generateRoute($name);} );

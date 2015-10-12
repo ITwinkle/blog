@@ -7,7 +7,7 @@ class Session
     /**
      * @var string
      */
-    public $returnUrl;
+    public $returnUrl = '/';
 
     /**
      * Start Session

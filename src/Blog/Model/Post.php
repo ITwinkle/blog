@@ -9,14 +9,16 @@
 namespace Blog\Model;
 
 use Framework\Model\ActiveRecord;
+use Framework\Model\ActiveRecodrInterface;
 use Framework\Validation\Filter\Length;
 use Framework\Validation\Filter\NotBlank;
 
-class Post extends ActiveRecord
+class Post extends ActiveRecord implements ActiveRecodrInterface
 {
     public $title;
     public $content;
     public $date;
+    public $name;
 
     public static function getTable()
     {

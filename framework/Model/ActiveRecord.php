@@ -3,6 +3,7 @@
 namespace framework\Model;
 
 use framework\Di\Service;
+
 abstract class ActiveRecord
 {
     public $id;
@@ -12,21 +13,21 @@ abstract class ActiveRecord
      *
      * @return int
      */
-    abstract static function getId();
+    static function getId(){}
 
     /**
      *return table name
      *
      * @return string
      */
-    abstract static function getTable();
+    static function getTable(){}
 
     /**
      * return names of column
      *
      * @return array
      */
-    abstract static function getColumns();
+     static function getColumns(){}
 
 
     /**
@@ -38,7 +39,7 @@ abstract class ActiveRecord
      * @throws \Framework\Exception\DiException
      */
     public static function find($col,$val){
-        $pdo = Service::get('pdo')->prepare('select * from '. static::getTable(). ' where '.$col. ' = '.$val);
+        $pdo = Service::get('pdo')->prepare('select * from '. static::getTable(). ' where '.$col. ' =\''.$val.'\'');
         $pdo->execute();
         return $pdo->fetchObject(static::class);
     }
@@ -50,12 +51,12 @@ abstract class ActiveRecord
     public function save(){
         $query = 'insert into '.static::getTable().'(';
         foreach(static::getColumns() as $column) {
-            $query .= $column.',';
+            $query .='\''. $column.'\',';
         }
         $query = substr($query,0,-1);
-        $query .= ') values (';
+        $query .= ') values(';
         foreach(static::getColumns() as $col){
-            $query.= $this->$col.',';
+            $query.= '\''.$this->$col.'\',';
         }
         $query = substr($query,0,-1);
         $query .= ')';
