@@ -182,8 +182,7 @@ class Response implements ResponseInterface
         if(0 != count($this->headers)){
             $this->sendHeaders();
         }
-        if(!empty($this->body)){
-            echo $this->body;
-        }
+
+        echo $this->body;
     }
 }
