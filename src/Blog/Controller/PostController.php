@@ -39,7 +39,7 @@ class PostController extends Controller
                 $post->title   = $this->getRequest()->post('title');
                 $post->content = trim($this->getRequest()->post('content'));
                 $post->date    = $date->format('Y-m-d H:i:s');
-                $post->name = Service::get('security')->isAuthenticated()?Service::get('security')->getUser()->email:'name';
+                $post->name = Service::get('security')->isAuthenticated()?Service::get('security')->getUser()->email:'Incognito';
                 $validator = new Validator($post);
                 if ($validator->isValid()) {
                     $post->save();

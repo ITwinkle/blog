@@ -1,4 +1,5 @@
-<?php if (!isset($errors)) {
+<?php
+if (!isset($errors)) {
     $errors = array();
 }
 

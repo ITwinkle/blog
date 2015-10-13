@@ -10,7 +10,7 @@ use Framework\Renderer\Renderer;
 use Framework\Application;
 abstract class Controller
 {
-    public function redirect($url, $message = '',$type = 'OK'){
+    public function redirect($url, $message = '',$type = 'success'){
         if($message){
             Service::get('flush')->set($type,$message);
         }

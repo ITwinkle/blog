@@ -31,6 +31,9 @@ class Application
         }
        }
 
+    /**
+     * Switch on/off developer mode
+     */
     public function devMod(){
         if(static::$configs['mode'] === 'dev'){
             ini_set('error_reporting', E_ALL);
@@ -42,6 +45,13 @@ class Application
             ini_set('display_startup_errors', 0);
         }
     }
+
+    /**
+     * invoke controller
+     *
+     * @throws Exception\DiException
+     * @throws \Exception
+     */
     public function run(){
 
         Service::get('router')->set(static::$configs['routes']);
@@ -69,7 +79,12 @@ class Application
             throw new HttpNotFoundException('No such method', 404);
         }
         }catch (HttpNotFoundException $e){
-            echo $e->getMessage(). '\n file: '.$e->getFile(). '\n line: '.$e->getLine();
+            echo Service::get('renderer')->render(
+                Application::$configs['main_layout'],array(
+                'content'=> Service::get('renderer')->render(
+                    Application::$configs['error_500'],array('message'=>$e->getMessage(). ' on file: '.$e->getFile(). ' at line: '.$e->getLine(),'code'=>404)
+                )
+            ));
         }
     }
 }

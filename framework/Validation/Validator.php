@@ -31,7 +31,8 @@ class Validator
      * @param $error - text of error
      */
     public function setErrors($error){
-        $this->errors = $error;
+        $this->errors = array_merge($this->errors,$error) ;
+
     }
 
     /**
@@ -51,11 +52,12 @@ class Validator
         $rules = $this->object->getRules();
         foreach($rules as $rule=>$field){
             foreach($field as $value){
-                $val = $value->validate($this->object->$rule);
-                if(is_string($val)){
+                $val = $value->validate($this->object->$rule,$rule);
+                if(is_array($val)){
                     $this->setErrors($val);
                 }
             }
+
         }
         if(!empty($this->getErrors())){
             return false;

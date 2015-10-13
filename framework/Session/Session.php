@@ -33,7 +33,7 @@ class Session
      * @return mixed
      */
     public function get($name){
-        return $_SESSION[$name]?$_SESSION[$name] : false;
+        return $this->isExist($name)?$_SESSION[$name] : null;
     }
 
     /**
@@ -51,7 +51,7 @@ class Session
      * @return bool
      */
     public function isExist($name){
-        return $_SESSION[$name]? true : false;
+        return isset($_SESSION[$name]);
     }
 
 }

@@ -7,12 +7,13 @@ class NotBlank
     /**
      * check field for empty
      *
-     * @param $field - checked field
+     * @param $field string - checked field
+     * @param $key string - name of checked field
      * @return bool|string
      */
-    public function validate($field){
+    public function validate($field,$key){
         if('' == trim($field,' ')){
-            return $field.' is empty!';
+            return array($key=>'The field is empty!');
         }else{
             return true;
         }

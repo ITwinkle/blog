@@ -21,13 +21,14 @@ class Length
      * validate field to length
      *
      * @param $field - checked field
+     * @param $key - name of checked field
      * @return bool|string
      */
-    public function validate($field){
+    public function validate($field,$key){
         if(strlen($field) >= $this->minLength && strlen($field) <= $this->maxLength){
             return true;
         }else{
-            return 'Length of \''.$field.'\' don\'t in diapason between '.$this->minLength.' and '.$this->maxLenght;
+            return array($key=>'Length of \''.$key.'\' don\'t in diapason between '.$this->minLength.' and '.$this->maxLength.' symbols');
         }
     }
 }
