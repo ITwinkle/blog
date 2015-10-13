@@ -35,7 +35,6 @@ class Renderer
         );
         $this->set('flush', Service::get('flush')->show());
         $this->set('user',Service::get('security')->getUser()?Service::get('security')->getUser():null);
-        $this->set('route',Service::get('router')->getActiveRoute());
         $this->set('getRoute',function($name){return Service::get('router')->generateRoute($name);} );
         $this->set('generateToken',function(){return Service::get('noCrsf');});
 

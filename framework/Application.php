@@ -57,6 +57,7 @@ class Application
         Service::get('router')->set(static::$configs['routes']);
 
         $route = Service::get('router')->getRoute();
+        Service::get('renderer')->set('route',Service::get('router')->getActiveRoute());
         $controllerClass = $route['controller'];
         $actionClass = $route['action'].'Action';
         try{

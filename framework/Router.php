@@ -21,19 +21,12 @@ class Router
      * @var array
      */
     private $routes = array();
-    /**
-     * current controller
-     *
-     * @var mixed
-     */
-    private $controller;
-    /**
-     * current action
-     *
-     * @var mixed
-     */
-    private $action;
 
+    /**
+     * current route
+     *
+     * @var string
+     */
     private $activeRoute;
 
     /**
@@ -97,7 +90,7 @@ class Router
         if(array_key_exists($name,$this->routes)){
             return $this->routes[$name]['pattern'];
         }
-        return "sadas";
+        return false;
     }
 
     /**
@@ -107,25 +100,5 @@ class Router
      */
     public function getActiveRoute(){
         return $this->activeRoute;
-    }
-
-
-    /**
-     * return current controller
-     *
-     * @return mixed
-     */
-    public function getController()
-    {
-        return $this->controller;
-    }
-    /**
-     * return current action
-     *
-     * @return mixed
-     */
-    public function getAction()
-    {
-        return $this->action;
     }
 }
