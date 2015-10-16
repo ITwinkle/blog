@@ -13,9 +13,9 @@ use Framework\Controller\Controller;
 use Framework\DI\Service;
 use Framework\Exception\DatabaseException;
 use Framework\Exception\HttpNotFoundException;
-use Framework\Request\Request;
 use Framework\Response\Response;
 use Framework\Validation\Validator;
+
 
 class PostController extends Controller
 {
@@ -43,7 +43,7 @@ class PostController extends Controller
                 $validator = new Validator($post);
                 if ($validator->isValid()) {
                     $post->save();
-                    return $this->redirect($this->generateRoute('home'), 'The data has been saved successfully');
+                    return $this->redirect($this->generateRoute('home'), Service::get('locale')->getWord('SAVED'));
                 } else {
                     $error = $validator->getErrors();
                 }

@@ -13,5 +13,9 @@ return array(
     'security'    => array(
         'user_class'  => 'Blog\\Model\\User',
         'login_route' => 'login'
+    ),
+    'location'    => array(
+        'path' => __DIR__.'/../Locale/',
+        'language' => 'ru_RU'
     )
 );

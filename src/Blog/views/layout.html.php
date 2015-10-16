@@ -8,7 +8,7 @@ $activeIfRoute = function ($item) use (&$route) {
 <html lang="en-us">
 
 <head>
-    <title>Education</title>
+    <title><?=$_("EDUCATION")?></title>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,13 +38,13 @@ $activeIfRoute = function ($item) use (&$route) {
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li <?php echo $activeIfRoute('home') ?>><a href="<?php echo $getRoute('home')?>">Home</a></li>
-                <li <?php echo $activeIfRoute('add_post') ?>><a href="<?php echo $getRoute('add_post')?>">Add Post</a></li>
+                <li <?php echo $activeIfRoute('home') ?>><a href="<?php echo $getRoute('home')?>"><?=$_('HOME')?></a></li>
+                <li <?php echo $activeIfRoute('add_post') ?>><a href="<?php echo $getRoute('add_post')?>"><?=$_('ADD_POST')?></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if (is_null($user)) { ?>
-                    <li <?php echo $activeIfRoute('signin') ?>><a href="<?php echo $getRoute('signin')?>">Sign in</a></li>
-                    <li <?php echo $activeIfRoute('login') ?>><a href="<?php echo $getRoute('login')?>">Login</a></li>
+                    <li <?php echo $activeIfRoute('signin') ?>><a href="<?php echo $getRoute('signin')?>"><?=$_('SIGN_IN')?></a></li>
+                    <li <?php echo $activeIfRoute('login') ?>><a href="<?php echo $getRoute('login')?>"><?=$_('LOGIN')?></a></li>
                 <?php } else { ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -52,9 +52,9 @@ $activeIfRoute = function ($item) use (&$route) {
                             <?php echo 'Hello, '.$user->email ?> <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li <?php echo $activeIfRoute('profile') ?>><a href="<?php echo $getRoute('profile')?>">Profile</a></li>
+                            <li <?php echo $activeIfRoute('profile') ?>><a href="<?php echo $getRoute('profile')?>"><?=$_('PROFILE')?></a></li>
                             <li class="divider"></li>
-                            <li><a href="<?php echo $getRoute('logout')?>">Logout</a></li>
+                            <li><a href="<?php echo $getRoute('logout')?>"><?=$_('LOGOUT')?></a></li>
                         </ul>
                     </li>
 
@@ -70,7 +70,7 @@ $activeIfRoute = function ($item) use (&$route) {
             foreach($msgs as $msg) {?>
             <div class="alert alert-<?php echo $type==='error'?'danger':$type?> alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span></button>
+                        class="sr-only"><?=$_('CLOSE')?></span></button>
                 <?php echo $msg; ?>
             </div>
         <?php } ?>

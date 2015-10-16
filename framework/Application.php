@@ -3,6 +3,7 @@
 namespace Framework;
 use Framework\DI\Service;
 use Framework\Exception\HttpNotFoundException;
+use Framework\Response\Response;
 use Framework\Response\ResponseInterface;
 
 class Application
@@ -17,6 +18,7 @@ class Application
     public function __construct($conf){
         static::$configs = include $conf;
         $this->devMod();
+        Service::set('locale', new \Framework\Location(static::$configs['location']['path'], static::$configs['location']['language']));
         Service::set('router',new \Framework\Router());
         Service::set('noCrsf', new \Framework\Security\NoCrsf());
         Service::set('flush', new \Framework\Flush());
@@ -80,12 +82,13 @@ class Application
             throw new HttpNotFoundException('No such method', 404);
         }
         }catch (HttpNotFoundException $e){
-            echo Service::get('renderer')->render(
+            $response = new Response(Service::get('renderer')->render(
                 Application::$configs['main_layout'],array(
                 'content'=> Service::get('renderer')->render(
                     Application::$configs['error_500'],array('message'=>$e->getMessage(). ' on file: '.$e->getFile(). ' at line: '.$e->getLine(),'code'=>404)
                 )
-            ));
+            )));
+            $response->send();
         }
     }
 }

@@ -19,9 +19,9 @@ $getErrorBody = function ($field) use ($errors){
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title"><?php if (isset($post->id)) {
-                echo 'Edit Post';
+                echo $_('EDIT_POST');
             } else {
-                echo 'Add New Post';
+                echo $_('ADD_NEW_POST');
             } ?></h3>
     </div>
     <div class="panel-body">
@@ -29,22 +29,22 @@ $getErrorBody = function ($field) use ($errors){
         <?php if (isset($error) && !is_array($error)) { ?>
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span></button>
-                <strong>Error!</strong> <?php echo $error ?>
+                        class="sr-only"><?=$_('CLOSE')?></span></button>
+                <strong><?=$_('ERROR')?></strong> <?php echo $error ?>
             </div>
         <?php } ?>
 
         <form class="form-horizontal" role="form" method="post" id="post-form" action="<?php echo $action ?>">
             <div class="form-group <?php echo $getValidationClass('title') ?>">
-                <label class="col-sm-2 control-label">Title</label>
+                <label class="col-sm-2 control-label"><?=$_('TITLE')?></label>
 
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="title" placeholder="Title" value="<?php echo @$post->title ?>">
+                    <input type="text" class="form-control" name="title" placeholder="<?=$_('TITLE')?>" value="<?php echo @$post->title ?>">
                     <?php echo $getErrorBody('title')?>
                 </div>
             </div>
             <div class="form-group <?php echo $getValidationClass('content') ?>">
-                <label class="col-sm-2 control-label">Content</label>
+                <label class="col-sm-2 control-label"><?=$_('CONTENT')?></label>
 
                 <div class="col-sm-10">
 
@@ -60,9 +60,9 @@ $getErrorBody = function ($field) use ($errors){
                             <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i
                                     class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
-                                <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
-                                <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+                                <li><a data-edit="fontSize 5"><font size="5"><?=$_('HUGE')?></font></a></li>
+                                <li><a data-edit="fontSize 3"><font size="3"><?=$_('NORMAL')?></font></a></li>
+                                <li><a data-edit="fontSize 1"><font size="1"><?=$_('SMALL')?></font></a></li>
                             </ul>
                         </div>
                         <div class="btn-group">
@@ -114,8 +114,8 @@ $getErrorBody = function ($field) use ($errors){
             <?php $generateToken() ?>
 
             <div class="btn-group pull-right">
-                <button type="submit" class="btn btn-success mr-5">Save</button>
-                <a href="/" class="btn btn-danger">Cancel</a>
+                <button type="submit" class="btn btn-success mr-5"><?=$_('SAVE')?></button>
+                <a href="/" class="btn btn-danger"><?=$_('CANCEL')?></a>
             </div>
         </form>
     </div>

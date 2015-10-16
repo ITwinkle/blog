@@ -37,7 +37,7 @@ class Renderer
         $this->set('user',Service::get('security')->getUser()?Service::get('security')->getUser():null);
         $this->set('getRoute',function($name){return Service::get('router')->generateRoute($name);} );
         $this->set('generateToken',function(){return Service::get('noCrsf');});
-
+        $this->set('_',function($word){return Service::get('locale')->getWord($word);});
     }
 
     /**

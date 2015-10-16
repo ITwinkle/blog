@@ -30,9 +30,9 @@ class Router
     private $activeRoute;
 
     /**
+     * Setter method
+     *
      * @param $routes array - array of rules,controllers,actions,params.
-     *
-     *
      * @return object Router
      */
     public function set(array $routes)
@@ -82,9 +82,10 @@ class Router
     }
 
     /**
-     *Generate specific uri
+     * Generate specific uri
      *
-     *@return array
+     * @param string $name -  name of route
+     * @return bool | array(if route found)
      */
     public function generateRoute($name){
         if(array_key_exists($name,$this->routes)){

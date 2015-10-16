@@ -2,7 +2,6 @@
 
 namespace Framework\Controller;
 
-
 use Framework\DI\Service;
 use Framework\Response\Response;
 use Framework\Response\ResponseRedirect;

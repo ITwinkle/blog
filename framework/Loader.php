@@ -40,15 +40,11 @@ class Loader
      */
     public static function addNamespacePath($alias, $dir, $prepend = false)
     {
-        // normalize namespace prefix
         $alias = trim($alias, '\\') . '\\';
-        // normalize the base directory with a trailing separator
         $dir = rtrim($dir, DIRECTORY_SEPARATOR) . '/';
-        // initialize the namespace prefix array
         if (isset(self::$aliases[$alias]) === false) {
             self::$aliases[$alias] = array();
         }
-        // retain the base directory for the namespace prefix
         if ($prepend) {
             array_unshift(self::$aliases[$alias], $dir);
         } else {
@@ -64,22 +60,14 @@ class Loader
      */
     public static function loadClass($class)
     {
-        // the current namespace alias
         $alias = $class;
-        // work backwards through the namespace names of the fully-qualified
-        // class name to find a mapped file name
         while (false !== $pos = strrpos($alias, '\\')) {
-            // retain the trailing namespace separator in the alias
             $alias = substr($class, 0, $pos + 1);
-            // the rest is the relative class name
             $relative_class = substr($class, $pos + 1);
-            // try to load a mapped file for the alias and relative class
             $mapped_file = self::loadMappedFile($alias, $relative_class);
             if ($mapped_file) {
                 return $mapped_file;
             }
-            // remove the trailing namespace separator for the next iteration
-            // of strrpos()
             $alias = rtrim($alias, '\\');
         }
         return false;
@@ -94,19 +82,13 @@ class Loader
      */
     protected static function loadMappedFile($alias, $relative_class)
     {
-        // are there any base directories for this namespace prefix?
         if (isset(self::$aliases[$alias]) === false) {
             return false;
         }
-        // look through base directories for this namespace prefix
         foreach (self::$aliases[$alias] as $dir) {
-            // replace the namespace prefix with the base directory,
-            // replace namespace separators with directory separators
-            // in the relative class name, append with .php
             $file = $dir
                 . str_replace('\\', '/', $relative_class)
                 . '.php';
-            // if the mapped file exists, require it
             if (self::requireFile($file)) {
                 return $file;
             }
