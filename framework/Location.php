@@ -28,6 +28,6 @@ class Location
      * @return mixed
      */
     public function getWord($word){
-        return $this->words[$word];
+        return $this->words[$word]? $this->words[$word] : $word;
     }
 }
